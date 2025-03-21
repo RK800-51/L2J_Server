@@ -4452,7 +4452,7 @@ public final class L2PcInstance extends L2Playable {
 		}
 		
 		if (isInParty() && getParty().isInDimensionalRift()) {
-			getParty().getDimensionalRift().getDeadMemberList().add(this);
+			getParty().getDimensionalRift().getDeadPlayers().add(this);
 		}
 		
 		if (getAgathionId() != 0) {

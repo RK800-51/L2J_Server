@@ -115,6 +115,11 @@ public final class RequestRestartPoint extends L2GameClientPacket {
 		} else if (activeChar.isFestivalParticipant()) {
 			_requestedPointType = 5;
 		}
+		if (activeChar.isInParty()) {
+			if (activeChar.getParty().isInDimensionalRift()) {
+				activeChar.getParty().getDimensionalRift().getWaitingRoomPlayers().add(activeChar);
+			}
+		}
 		switch (_requestedPointType) {
 			case 1: // to clanhall
 			{
