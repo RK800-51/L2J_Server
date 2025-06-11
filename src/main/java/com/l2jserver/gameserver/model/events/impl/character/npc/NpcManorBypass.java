@@ -20,7 +20,7 @@ package com.l2jserver.gameserver.model.events.impl.character.npc;
 
 import static com.l2jserver.gameserver.model.events.EventType.NPC_MANOR_BYPASS;
 
-import com.l2jserver.gameserver.model.actor.L2Npc;
+import com.l2jserver.gameserver.model.actor.L2Character;
 import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jserver.gameserver.model.events.EventType;
 import com.l2jserver.gameserver.model.events.impl.BaseEvent;
@@ -30,7 +30,7 @@ import com.l2jserver.gameserver.model.events.impl.BaseEvent;
  * @author malyelfik
  * @author Zoey76
  */
-public record NpcManorBypass(L2PcInstance player, L2Npc target, int request, int manorId, boolean nextPeriod) implements BaseEvent {
+public record NpcManorBypass(L2PcInstance player, L2Character target, int request, int manorId, boolean nextPeriod) implements BaseEvent {
 	@Override
 	public EventType getType() {
 		return NPC_MANOR_BYPASS;

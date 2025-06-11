@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import com.l2jserver.commons.database.ConnectionFactory;
 import com.l2jserver.gameserver.ThreadPoolManager;
 import com.l2jserver.gameserver.taskmanager.tasks.TaskBirthday;
+import com.l2jserver.gameserver.taskmanager.tasks.TaskCastleTaxUpdate;
 import com.l2jserver.gameserver.taskmanager.tasks.TaskClanLeaderApply;
 import com.l2jserver.gameserver.taskmanager.tasks.TaskCleanUp;
 import com.l2jserver.gameserver.taskmanager.tasks.TaskDailySkillReuseClean;
@@ -165,6 +166,7 @@ public final class TaskManager {
 	
 	private void initializate() {
 		registerTask(new TaskBirthday());
+		registerTask(new TaskCastleTaxUpdate());
 		registerTask(new TaskClanLeaderApply());
 		registerTask(new TaskCleanUp());
 		registerTask(new TaskDailySkillReuseClean());

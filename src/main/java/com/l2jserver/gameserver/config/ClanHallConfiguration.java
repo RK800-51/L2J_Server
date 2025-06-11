@@ -41,8 +41,17 @@ import org.aeonbits.owner.Reloadable;
 @HotReload(value = 20, unit = MINUTES, type = ASYNC)
 public interface ClanHallConfiguration extends Reloadable {
 	
-	@Key("TeleportFunctionFeeRatio")
-	long getTeleportFunctionFeeRatio();
+	@Key("FunctionFeeDay1")
+	long getFunctionFeeDay1();
+	
+	@Key("FunctionFeeDay2")
+	long getFunctionFeeDay2();
+	
+	@Key("FunctionFeeDay3")
+	long getFunctionFeeDay3();
+	
+	@Key("FunctionFeeDay7")
+	long getFunctionFeeDay7();
 	
 	@Key("TeleportFunctionFeeLvl1")
 	int getTeleportFunctionFeeLvl1();
@@ -50,8 +59,11 @@ public interface ClanHallConfiguration extends Reloadable {
 	@Key("TeleportFunctionFeeLvl2")
 	int getTeleportFunctionFeeLvl2();
 	
-	@Key("SupportFunctionFeeRatio")
-	long getSupportFunctionFeeRatio();
+	@Key("TeleportFunctionFeeLvl11")
+	int getTeleportFunctionFeeLvl11();
+	
+	@Key("TeleportFunctionFeeLvl12")
+	int getTeleportFunctionFeeLvl12();
 	
 	@Key("SupportFeeLvl1")
 	int getSupportFeeLvl1();
@@ -68,44 +80,41 @@ public interface ClanHallConfiguration extends Reloadable {
 	@Key("SupportFeeLvl5")
 	int getSupportFeeLvl5();
 	
-	@Key("SupportFeeLvl6")
-	int getSupportFeeLvl6();
-	
 	@Key("SupportFeeLvl7")
 	int getSupportFeeLvl7();
 	
 	@Key("SupportFeeLvl8")
 	int getSupportFeeLvl8();
 	
-	@Key("MpRegenerationFunctionFeeRatio")
-	long getMpRegenerationFunctionFeeRatio();
+	@Key("SupportFeeLvl15")
+	int getSupportFeeLvl15();
+	
+	@Key("SupportFeeLvl18")
+	int getSupportFeeLvl18();
 	
 	@Key("MpRegenerationFeeLvl1")
 	int getMpRegenerationFeeLvl1();
 	
-	@Key("MpRegenerationFeeLvl2")
-	int getMpRegenerationFeeLvl2();
-	
 	@Key("MpRegenerationFeeLvl3")
 	int getMpRegenerationFeeLvl3();
-	
-	@Key("MpRegenerationFeeLvl4")
-	int getMpRegenerationFeeLvl4();
 	
 	@Key("MpRegenerationFeeLvl5")
 	int getMpRegenerationFeeLvl5();
 	
-	@Key("HpRegenerationFunctionFeeRatio")
-	long getHpRegenerationFunctionFeeRatio();
+	@Key("MpRegenerationFeeLvl6")
+	int getMpRegenerationFeeLvl6();
 	
-	@Key("HpRegenerationFeeLvl1")
-	int getHpRegenerationFeeLvl1();
+	@Key("MpRegenerationFeeLvl8")
+	int getMpRegenerationFeeLvl8();
+	
+	@Key("MpRegenerationFeeLvl18")
+	int getMpRegenerationFeeLvl18();
+	
+	@Key("MpRegenerationFeeLvl20")
+	int getMpRegenerationFeeLvl20();
 	
 	@Key("HpRegenerationFeeLvl2")
 	int getHpRegenerationFeeLvl2();
-	
-	@Key("HpRegenerationFeeLvl3")
-	int getHpRegenerationFeeLvl3();
 	
 	@Key("HpRegenerationFeeLvl4")
 	int getHpRegenerationFeeLvl4();
@@ -128,29 +137,26 @@ public interface ClanHallConfiguration extends Reloadable {
 	@Key("HpRegenerationFeeLvl10")
 	int getHpRegenerationFeeLvl10();
 	
-	@Key("HpRegenerationFeeLvl11")
-	int getHpRegenerationFeeLvl11();
-	
 	@Key("HpRegenerationFeeLvl12")
 	int getHpRegenerationFeeLvl12();
 	
 	@Key("HpRegenerationFeeLvl13")
 	int getHpRegenerationFeeLvl13();
 	
-	@Key("ExpRegenerationFunctionFeeRatio")
-	long getExpRegenerationFunctionFeeRatio();
+	@Key("HpRegenerationFeeLvl15")
+	int getHpRegenerationFeeLvl15();
+	
+	@Key("HpRegenerationFeeLvl25")
+	int getHpRegenerationFeeLvl25();
+	
+	@Key("HpRegenerationFeeLvl30")
+	int getHpRegenerationFeeLvl30();
 	
 	@Key("ExpRegenerationFeeLvl1")
 	int getExpRegenerationFeeLvl1();
 	
-	@Key("ExpRegenerationFeeLvl2")
-	int getExpRegenerationFeeLvl2();
-	
 	@Key("ExpRegenerationFeeLvl3")
 	int getExpRegenerationFeeLvl3();
-	
-	@Key("ExpRegenerationFeeLvl4")
-	int getExpRegenerationFeeLvl4();
 	
 	@Key("ExpRegenerationFeeLvl5")
 	int getExpRegenerationFeeLvl5();
@@ -161,8 +167,17 @@ public interface ClanHallConfiguration extends Reloadable {
 	@Key("ExpRegenerationFeeLvl7")
 	int getExpRegenerationFeeLvl7();
 	
-	@Key("ItemCreationFunctionFeeRatio")
-	long getItemCreationFunctionFeeRatio();
+	@Key("ExpRegenerationFeeLvl8")
+	int getExpRegenerationFeeLvl8();
+	
+	@Key("ExpRegenerationFeeLvl10")
+	int getExpRegenerationFeeLvl10();
+	
+	@Key("ExpRegenerationFeeLvl19")
+	int getExpRegenerationFeeLvl19();
+	
+	@Key("ExpRegenerationFeeLvl20")
+	int getExpRegenerationFeeLvl20();
 	
 	@Key("ItemCreationFunctionFeeLvl1")
 	int getItemCreationFunctionFeeLvl1();
@@ -173,8 +188,14 @@ public interface ClanHallConfiguration extends Reloadable {
 	@Key("ItemCreationFunctionFeeLvl3")
 	int getItemCreationFunctionFeeLvl3();
 	
-	@Key("CurtainFunctionFeeRatio")
-	long getCurtainFunctionFeeRatio();
+	@Key("ItemCreationFunctionFeeLvl11")
+	int getItemCreationFunctionFeeLvl11();
+	
+	@Key("ItemCreationFunctionFeeLvl12")
+	int getItemCreationFunctionFeeLvl12();
+	
+	@Key("ItemCreationFunctionFeeLvl13")
+	int getItemCreationFunctionFeeLvl13();
 	
 	@Key("CurtainFunctionFeeLvl1")
 	int getCurtainFunctionFeeLvl1();
@@ -188,8 +209,11 @@ public interface ClanHallConfiguration extends Reloadable {
 	@Key("FrontPlatformFunctionFeeLvl2")
 	int getFrontPlatformFunctionFeeLvl2();
 	
-	@Key("FrontPlatformFunctionFeeRatio")
-	long getFrontPlatformFunctionFeeRatio();
+	@Key("BroadCastFunctionFeeLvl1")
+	int getBroadCastFunctionFeeLvl1();
+	
+	@Key("BroadCastFunctionFeeLvl2")
+	int getBroadCastFunctionFeeLvl2();
 	
 	@Key("MpBuffFree")
 	boolean mpBuffFree();

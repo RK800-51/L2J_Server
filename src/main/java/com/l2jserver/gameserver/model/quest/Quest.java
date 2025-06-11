@@ -28,6 +28,7 @@ import static com.l2jserver.gameserver.model.events.EventType.FACTION_CALL;
 import static com.l2jserver.gameserver.model.events.EventType.ITEM_BYPASS;
 import static com.l2jserver.gameserver.model.events.EventType.ITEM_TALK;
 import static com.l2jserver.gameserver.model.events.EventType.NPC_CREATURE_SEE;
+import static com.l2jserver.gameserver.model.events.EventType.NPC_MANOR_BYPASS;
 import static com.l2jserver.gameserver.model.events.EventType.NPC_MOVE_FINISHED;
 import static com.l2jserver.gameserver.model.events.EventType.NPC_MOVE_NODE_ARRIVED;
 import static com.l2jserver.gameserver.model.events.EventType.NPC_MOVE_ROUTE_FINISHED;
@@ -40,6 +41,7 @@ import static com.l2jserver.gameserver.model.events.EventType.PLAYER_LOGIN;
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_MENU_SELECTED;
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_QUEST_ACCEPTED;
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_SKILL_LEARNED;
+import static com.l2jserver.gameserver.model.events.EventType.PLAYER_TELEPORT_REQUEST;
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_TUTORIAL;
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_TUTORIAL_CLIENT_EVENT;
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_TUTORIAL_CMD;
@@ -89,6 +91,7 @@ import com.l2jserver.gameserver.model.events.impl.character.CreatureZoneEnter;
 import com.l2jserver.gameserver.model.events.impl.character.CreatureZoneExit;
 import com.l2jserver.gameserver.model.events.impl.character.npc.NpcCreatureSee;
 import com.l2jserver.gameserver.model.events.impl.character.npc.NpcEventReceived;
+import com.l2jserver.gameserver.model.events.impl.character.npc.NpcManorBypass;
 import com.l2jserver.gameserver.model.events.impl.character.npc.NpcMoveFinished;
 import com.l2jserver.gameserver.model.events.impl.character.npc.NpcMoveNodeArrived;
 import com.l2jserver.gameserver.model.events.impl.character.npc.NpcMoveRouteFinished;
@@ -106,6 +109,7 @@ import com.l2jserver.gameserver.model.events.impl.character.player.PlayerMenuSel
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerOneSkillSelected;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerQuestAccepted;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerSkillLearned;
+import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTeleportRequest;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTutorial;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTutorialClientEvent;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTutorialCmd;
@@ -595,6 +599,14 @@ public class Quest extends AbstractScript implements IIdentifiable {
 	}
 	
 	/**
+	 * On Manor Menu Selected event.
+	 * @param event the event
+	 */
+	public void onManorMenuSelected(NpcManorBypass event) {
+		
+	}
+	
+	/**
 	 * On Quest Accepted event.
 	 * @param event the event
 	 */
@@ -623,6 +635,13 @@ public class Quest extends AbstractScript implements IIdentifiable {
 	 * @param event the event
 	 */
 	public void onSkillLearned(PlayerSkillLearned event) {
+		
+	}
+	
+	/**
+	 * On Teleport Request event
+	 */
+	public void onTeleportRequest(PlayerTeleportRequest event) {
 		
 	}
 	
@@ -1213,6 +1232,14 @@ public class Quest extends AbstractScript implements IIdentifiable {
 	}
 	
 	/**
+	 * Binds the NPCs to the Manor Menu Selected event.
+	 * @param npcIds the IDs of the NPCs
+	 */
+	public void bindManorMenuSelected(int... npcIds) {
+		registerConsumer((NpcManorBypass event) -> onManorMenuSelected(event), NPC_MANOR_BYPASS, NPC, npcIds);
+	}
+	
+	/**
 	 * Binds the NPCs to the Quest Accepted event.
 	 * @param npcIds the IDs of the NPCs
 	 */
@@ -1234,6 +1261,13 @@ public class Quest extends AbstractScript implements IIdentifiable {
 	 */
 	public void bindSkillLearned(int... npcIds) {
 		registerConsumer((PlayerSkillLearned event) -> onSkillLearned(event), PLAYER_SKILL_LEARNED, NPC, npcIds);
+	}
+	
+	/**
+	 * Binds the NPCs to the Teleport Request event.
+	 */
+	public void bindTeleportRequest(int... npcIds) {
+		registerConsumer((PlayerTeleportRequest event) -> onTeleportRequest(event), PLAYER_TELEPORT_REQUEST, NPC, npcIds);
 	}
 	
 	/**

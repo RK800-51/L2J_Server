@@ -55,6 +55,8 @@ public class DoorData implements IXmlReader {
 	
 	private final Map<Integer, L2DoorInstance> _doors = new HashMap<>();
 	
+	private final Map<String, L2DoorInstance> _doorsName = new HashMap<>();
+	
 	private final Map<Integer, StatsSet> _templates = new HashMap<>();
 	
 	private final Map<Integer, List<L2DoorInstance>> _regions = new HashMap<>();
@@ -66,6 +68,7 @@ public class DoorData implements IXmlReader {
 	@Override
 	public void load() {
 		_doors.clear();
+		_doorsName.clear();
 		GROUPS.clear();
 		_regions.clear();
 		parseDatapackFile("data/doors.xml");
@@ -130,9 +133,13 @@ public class DoorData implements IXmlReader {
 		return _doors.get(doorId);
 	}
 	
+	public L2DoorInstance getDoorByName(String name) {
+		return _doorsName.get(name);
+	}
+	
 	public void putDoor(L2DoorInstance door, int region) {
 		_doors.put(door.getId(), door);
-		
+		_doorsName.put(door.getDoorName(), door);
 		if (!_regions.containsKey(region)) {
 			_regions.put(region, new ArrayList<>());
 		}

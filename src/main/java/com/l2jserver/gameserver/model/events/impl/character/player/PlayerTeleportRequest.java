@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jserver.gameserver.model.actor.instance;
+package com.l2jserver.gameserver.model.events.impl.character.player;
 
-import com.l2jserver.gameserver.enums.InstanceType;
-import com.l2jserver.gameserver.model.actor.templates.L2NpcTemplate;
+import static com.l2jserver.gameserver.model.events.EventType.PLAYER_TELEPORT_REQUEST;
+
+import com.l2jserver.gameserver.model.actor.L2Character;
+import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jserver.gameserver.model.events.EventType;
+import com.l2jserver.gameserver.model.events.impl.BaseEvent;
 
 /**
- * Fortress Foreman implementation used for: Area Teleports, Support Magic, Clan Warehouse, Exp Loss Reduction
+ * Player Teleport Request event.
+ * @author Charus
+ * @version 2.6.3.0
  */
-public class L2FortManagerInstance extends L2MerchantInstance {
-	
-	public L2FortManagerInstance(int objectId, L2NpcTemplate template) {
-		super(objectId, template);
-		setInstanceType(InstanceType.L2FortManagerInstance);
-	}
-	
+public record PlayerTeleportRequest(L2PcInstance player, L2Character npc) implements BaseEvent {
 	@Override
-	public boolean isWarehouse() {
-		return true;
+	public EventType getType() {
+		return PLAYER_TELEPORT_REQUEST;
 	}
 }

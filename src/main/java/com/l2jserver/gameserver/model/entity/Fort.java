@@ -92,11 +92,18 @@ public final class Fort extends AbstractResidence {
 	private final Set<Integer> _availableCastles = new HashSet<>(1);
 	
 	/** Fortress Functions */
-	public static final int FUNC_TELEPORT = 1;
-	public static final int FUNC_RESTORE_HP = 2;
-	public static final int FUNC_RESTORE_MP = 3;
+	public static final int FUNC_RESTORE_HP = 1;
+	public static final int FUNC_RESTORE_MP = 2;
+	public static final int FUNC_RESTORE_CP = 3;
 	public static final int FUNC_RESTORE_EXP = 4;
-	public static final int FUNC_SUPPORT = 5;
+	public static final int FUNC_TELEPORT = 5;
+	public static final int FUNC_BROADCAST = 6;
+	public static final int FUNC_DECO_CURTAINS = 7;
+	public static final int FUNC_DECO_HANGING = 8;
+	public static final int FUNC_SUPPORT = 9;
+	public static final int FUNC_DECO_OUTERFLAG = 10;
+	public static final int FUNC_DECO_FRONTPLATEFORM = 11;
+	public static final int FUNC_ITEM_CREATE = 12;
 	
 	public class FortFunction {
 		private final int _type;
@@ -525,7 +532,7 @@ public final class Fort extends AbstractResidence {
 	/**
 	 * Remove function In List and in DB
 	 */
-	private void removeFunction(int functionType) {
+	public void removeFunction(int functionType) {
 		_function.remove(functionType);
 		try (var con = ConnectionFactory.getInstance().getConnection();
 			var ps = con.prepareStatement("DELETE FROM fort_functions WHERE fort_id=? AND type=?")) {

@@ -50,14 +50,18 @@ public abstract class ClanHall {
 	private final Map<Integer, ClanHallFunction> _functions;
 	
 	/** Clan Hall Functions */
-	public static final int FUNC_TELEPORT = 1;
-	public static final int FUNC_ITEM_CREATE = 2;
-	public static final int FUNC_RESTORE_HP = 3;
-	public static final int FUNC_RESTORE_MP = 4;
-	public static final int FUNC_RESTORE_EXP = 5;
-	public static final int FUNC_SUPPORT = 6;
-	public static final int FUNC_DECO_FRONTPLATEFORM = 7; // Only Auctionable Halls
-	public static final int FUNC_DECO_CURTAINS = 8; // Only Auctionable Halls
+	public static final int FUNC_RESTORE_HP = 1;
+	public static final int FUNC_RESTORE_MP = 2;
+	public static final int FUNC_RESTORE_CP = 3;
+	public static final int FUNC_RESTORE_EXP = 4;
+	public static final int FUNC_TELEPORT = 5;
+	public static final int FUNC_BROADCAST = 6;
+	public static final int FUNC_DECO_CURTAINS = 7;
+	public static final int FUNC_DECO_HANGING = 8;
+	public static final int FUNC_SUPPORT = 9;
+	public static final int FUNC_DECO_OUTERFLAG = 10;
+	public static final int FUNC_DECO_FRONTPLATEFORM = 11;
+	public static final int FUNC_ITEM_CREATE = 12;
 	
 	public class ClanHallFunction {
 		private final int _type;

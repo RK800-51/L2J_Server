@@ -20,7 +20,7 @@ package com.l2jserver.gameserver.model.events.impl.character.player;
 
 import static com.l2jserver.gameserver.model.events.EventType.PLAYER_MENU_SELECTED;
 
-import com.l2jserver.gameserver.model.actor.L2Npc;
+import com.l2jserver.gameserver.model.actor.L2Character;
 import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jserver.gameserver.model.events.EventType;
 import com.l2jserver.gameserver.model.events.impl.BaseEvent;
@@ -30,7 +30,7 @@ import com.l2jserver.gameserver.model.events.impl.BaseEvent;
  * @author Zoey76
  * @version 2.6.3.0
  */
-public record PlayerMenuSelected(L2PcInstance player, L2Npc npc, int ask, int reply) implements BaseEvent {
+public record PlayerMenuSelected(L2PcInstance player, L2Character npc, int ask, int reply) implements BaseEvent {
 	@Override
 	public EventType getType() {
 		return PLAYER_MENU_SELECTED;

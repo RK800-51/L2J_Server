@@ -55,7 +55,6 @@ import com.l2jserver.gameserver.data.sql.impl.CrestTable;
 import com.l2jserver.gameserver.data.sql.impl.NpcBufferTable;
 import com.l2jserver.gameserver.data.sql.impl.OfflineTradersTable;
 import com.l2jserver.gameserver.data.sql.impl.SummonSkillsTable;
-import com.l2jserver.gameserver.data.sql.impl.TeleportLocationTable;
 import com.l2jserver.gameserver.data.xml.impl.AdminData;
 import com.l2jserver.gameserver.data.xml.impl.ArmorSetsData;
 import com.l2jserver.gameserver.data.xml.impl.BuyListData;
@@ -311,7 +310,6 @@ public final class GameServer {
 		final var cacheStart = startTimedSection("Cache");
 		HtmCache.getInstance();
 		CrestTable.getInstance();
-		TeleportLocationTable.getInstance();
 		UIData.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();

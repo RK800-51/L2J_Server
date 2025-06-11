@@ -72,6 +72,8 @@ public final class Castle extends AbstractResidence {
 	private Calendar _siegeTimeRegistrationEndDate; // last siege end date + 1 day
 	private int _taxPercent = 0;
 	private double _taxRate = 0;
+	private int _nextTaxPercent = 0;
+	private long _nextTaxTime = 0;
 	private long _treasury = 0;
 	private boolean _showNpcCrest = false;
 	private L2SiegeZone _zone = null;
@@ -82,11 +84,18 @@ public final class Castle extends AbstractResidence {
 	private int _ticketBuyCount = 0;
 	
 	/** Castle Functions */
-	public static final int FUNC_TELEPORT = 1;
-	public static final int FUNC_RESTORE_HP = 2;
-	public static final int FUNC_RESTORE_MP = 3;
+	public static final int FUNC_RESTORE_HP = 1;
+	public static final int FUNC_RESTORE_MP = 2;
+	public static final int FUNC_RESTORE_CP = 3;
 	public static final int FUNC_RESTORE_EXP = 4;
-	public static final int FUNC_SUPPORT = 5;
+	public static final int FUNC_TELEPORT = 5;
+	public static final int FUNC_BROADCAST = 6;
+	public static final int FUNC_DECO_CURTAINS = 7;
+	public static final int FUNC_DECO_HANGING = 8;
+	public static final int FUNC_SUPPORT = 9;
+	public static final int FUNC_DECO_OUTERFLAG = 10;
+	public static final int FUNC_DECO_FRONTPLATEFORM = 11;
+	public static final int FUNC_ITEM_CREATE = 12;
 	
 	public class CastleFunction {
 		private final int _type;
@@ -479,6 +488,19 @@ public final class Castle extends AbstractResidence {
 		}
 	}
 	
+	public void setNextTaxPercent(int taxPercent) {
+		_nextTaxPercent = taxPercent;
+		
+		try (var con = ConnectionFactory.getInstance().getConnection();
+			var ps = con.prepareStatement("UPDATE castle SET next_tax = ? WHERE id = ?")) {
+			ps.setInt(1, taxPercent);
+			ps.setInt(2, getResidenceId());
+			ps.execute();
+		} catch (Exception e) {
+			LOG.warn(e.getMessage(), e);
+		}
+	}
+	
 	/**
 	 * Respawn all doors on castle grounds.
 	 */
@@ -513,7 +535,6 @@ public final class Castle extends AbstractResidence {
 			try (var rs = ps1.executeQuery()) {
 				while (rs.next()) {
 					setName(rs.getString("name"));
-					// _OwnerId = rs.getInt("ownerId");
 					
 					_siegeDate = Calendar.getInstance();
 					_siegeDate.setTimeInMillis(rs.getLong("siegeDate"));
@@ -522,6 +543,8 @@ public final class Castle extends AbstractResidence {
 					_isTimeRegistrationOver = rs.getBoolean("regTimeOver");
 					
 					_taxPercent = rs.getInt("taxPercent");
+					_nextTaxPercent = rs.getInt("next_tax");
+					_nextTaxTime = rs.getLong("next_tax_time");
 					_treasury = rs.getLong("treasury");
 					
 					_showNpcCrest = rs.getBoolean("showNpcCrest");
@@ -755,6 +778,14 @@ public final class Castle extends AbstractResidence {
 	
 	public double getTaxRate() {
 		return _taxRate;
+	}
+	
+	public int getNextTaxPercent() {
+		return _nextTaxPercent;
+	}
+	
+	public long getNextTaxTime() {
+		return _nextTaxTime;
 	}
 	
 	public long getTreasury() {

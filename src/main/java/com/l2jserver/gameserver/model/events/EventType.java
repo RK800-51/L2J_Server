@@ -76,6 +76,7 @@ import com.l2jserver.gameserver.model.events.impl.character.player.PlayerSit;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerSkillLearned;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerSummonSpawn;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerSummonTalk;
+import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTeleportRequest;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTransform;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTutorial;
 import com.l2jserver.gameserver.model.events.impl.character.player.PlayerTutorialClientEvent;
@@ -234,6 +235,7 @@ public enum EventType {
 	PLAYER_SKILL_LEARNED(PlayerSkillLearned.class, void.class),
 	PLAYER_MENU_SELECTED(PlayerMenuSelected.class, void.class),
 	PLAYER_QUEST_ACCEPTED(PlayerQuestAccepted.class, void.class),
+	PLAYER_TELEPORT_REQUEST(PlayerTeleportRequest.class, void.class),
 	PLAYER_STAND(PlayerSit.class, TerminateReturn.class),
 	PLAYER_SUMMON_SPAWN(PlayerSummonSpawn.class, void.class),
 	PLAYER_SUMMON_TALK(PlayerSummonTalk.class, void.class),

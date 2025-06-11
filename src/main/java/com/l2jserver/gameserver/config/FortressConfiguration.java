@@ -43,50 +43,38 @@ import com.l2jserver.gameserver.config.converter.Minutes2MillisecondsConverter;
 @HotReload(value = 20, unit = MINUTES, type = ASYNC)
 public interface FortressConfiguration extends Reloadable {
 	
-	@Key("TeleportFunctionFeeRatio")
-	long getTeleportFunctionFeeRatio();
+	@Key("FunctionFeeDay7")
+	long getFunctionFeeDay7();
 	
-	@Key("TeleportFunctionFeeLvl1")
-	int getTeleportFunctionFeeLvl1();
+	@Key("TeleportFunctionFeeLvl11")
+	int getTeleportFunctionFeeLvl11();
 	
-	@Key("TeleportFunctionFeeLvl2")
-	int getTeleportFunctionFeeLvl2();
+	@Key("TeleportFunctionFeeLvl12")
+	int getTeleportFunctionFeeLvl12();
 	
-	@Key("SupportFunctionFeeRatio")
-	long getSupportFunctionFeeRatio();
+	@Key("SupportFeeLvl15")
+	int getSupportFeeLvl15();
 	
-	@Key("SupportFeeLvl1")
-	int getSupportFeeLvl1();
+	@Key("SupportFeeLvl18")
+	int getSupportFeeLvl18();
 	
-	@Key("SupportFeeLvl2")
-	int getSupportFeeLvl2();
+	@Key("MpRegenerationFeeLvl18")
+	int getMpRegenerationFeeLvl18();
 	
-	@Key("MpRegenerationFunctionFeeRatio")
-	long getMpRegenerationFunctionFeeRatio();
+	@Key("MpRegenerationFeeLvl20")
+	int getMpRegenerationFeeLvl20();
 	
-	@Key("MpRegenerationFeeLvl1")
-	int getMpRegenerationFeeLvl1();
+	@Key("HpRegenerationFeeLvl25")
+	int getHpRegenerationFeeLvl25();
 	
-	@Key("MpRegenerationFeeLvl2")
-	int getMpRegenerationFeeLvl2();
+	@Key("HpRegenerationFeeLvl30")
+	int getHpRegenerationFeeLvl30();
 	
-	@Key("HpRegenerationFunctionFeeRatio")
-	long getHpRegenerationFunctionFeeRatio();
+	@Key("ExpRegenerationFeeLvl19")
+	int getExpRegenerationFeeLvl19();
 	
-	@Key("HpRegenerationFeeLvl1")
-	int getHpRegenerationFeeLvl1();
-	
-	@Key("HpRegenerationFeeLvl2")
-	int getHpRegenerationFeeLvl2();
-	
-	@Key("ExpRegenerationFunctionFeeRatio")
-	long getExpRegenerationFunctionFeeRatio();
-	
-	@Key("ExpRegenerationFeeLvl1")
-	int getExpRegenerationFeeLvl1();
-	
-	@Key("ExpRegenerationFeeLvl2")
-	int getExpRegenerationFeeLvl2();
+	@Key("ExpRegenerationFeeLvl20")
+	int getExpRegenerationFeeLvl20();
 	
 	@Key("PeriodicUpdateFrequency")
 	@ConverterClass(Minutes2MillisecondsConverter.class)
@@ -103,4 +91,7 @@ public interface FortressConfiguration extends Reloadable {
 	
 	@Key("MaxKeepTime")
 	int getMaxKeepTime();
+	
+	@Key("MpBuffFree")
+	boolean mpBuffFree();
 }
