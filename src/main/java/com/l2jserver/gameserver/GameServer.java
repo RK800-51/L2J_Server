@@ -93,7 +93,6 @@ import com.l2jserver.gameserver.datatables.AugmentationData;
 import com.l2jserver.gameserver.datatables.BotReportTable;
 import com.l2jserver.gameserver.datatables.EventDroplist;
 import com.l2jserver.gameserver.datatables.ItemTable;
-import com.l2jserver.gameserver.datatables.MerchantPriceConfigTable;
 import com.l2jserver.gameserver.datatables.SkillData;
 import com.l2jserver.gameserver.datatables.SpawnTable;
 import com.l2jserver.gameserver.handler.EffectHandler;
@@ -232,8 +231,6 @@ public final class GameServer {
 		EnchantItemOptionsData.getInstance();
 		OptionData.getInstance();
 		EnchantItemHPBonusData.getInstance();
-		MerchantPriceConfigTable.getInstance().loadInstances();
-		BuyListData.getInstance();
 		MultisellData.getInstance();
 		RecipeData.getInstance();
 		ArmorSetsData.getInstance();
@@ -353,6 +350,10 @@ public final class GameServer {
 		ScriptEngineManager.getInstance().executeScriptList(new File(server().getDatapackRoot(), "data/scripts.cfg"));
 		endTimedSection("Scripts", scriptsStart);
 		
+		final var buyListStart = startTimedSection("BuyLists");
+		BuyListData.getInstance().load();
+		endTimedSection("BuyLists", buyListStart);
+		
 		final var spawnsStart = startTimedSection("Spawns");
 		SpawnTable.getInstance().load();
 		DayNightSpawnManager.getInstance().trim().notifyChangeMode();
@@ -368,7 +369,6 @@ public final class GameServer {
 		FortManager.getInstance().activateInstances();
 		FortSiegeManager.getInstance();
 		SiegeScheduleData.getInstance();
-		MerchantPriceConfigTable.getInstance().updateReferences();
 		TerritoryWarManager.getInstance();
 		CastleManorManager.getInstance();
 		MercTicketManager.getInstance();

@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.l2jserver.gameserver.data.xml.impl.BuyListData;
-import com.l2jserver.gameserver.model.L2Object;
 import com.l2jserver.gameserver.model.actor.L2Character;
 import com.l2jserver.gameserver.model.actor.instance.L2MerchantInstance;
 import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
@@ -96,14 +95,12 @@ public final class RequestBuyItem extends L2GameClientPacket {
 			return;
 		}
 		
-		L2Object target = player.getTarget();
-		L2Character merchant = null;
+		L2Character merchant = player.getLastFolkNPC();
 		if (!player.isGM()) {
-			if (!(target instanceof L2MerchantInstance) || (!player.isInsideRadius(target, INTERACTION_DISTANCE, true, false)) || (player.getInstanceId() != target.getInstanceId())) {
+			if (!(merchant instanceof L2MerchantInstance) || (!player.isInsideRadius(merchant, INTERACTION_DISTANCE, true, false)) || (player.getInstanceId() != merchant.getInstanceId())) {
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
-			merchant = (L2Character) target;
 		}
 		
 		double castleTaxRate = 0;
@@ -121,16 +118,13 @@ public final class RequestBuyItem extends L2GameClientPacket {
 		}
 		
 		if (merchant != null) {
-			if (!buyList.isNpcAllowed(merchant.getId())) {
+			if (!buyList.isNpcAllowed(merchant.getId()) && !player.isGM()) {
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 			
 			if (merchant instanceof L2MerchantInstance) {
-				castleTaxRate = ((L2MerchantInstance) merchant).getMpc().getCastleTaxRate();
-				baseTaxRate = ((L2MerchantInstance) merchant).getMpc().getBaseTaxRate();
-			} else {
-				baseTaxRate = 0.5;
+				castleTaxRate = ((L2MerchantInstance) merchant).getCastle().getTaxRate();
 			}
 		}
 		
@@ -184,8 +178,10 @@ public final class RequestBuyItem extends L2GameClientPacket {
 				return;
 			}
 			// first calculate price per item with tax, then multiply by count
-			price = (long) (price * (1 + castleTaxRate + baseTaxRate));
+			baseTaxRate = product.getBaseTax();
+			price = (long) (price * (1 + (baseTaxRate + castleTaxRate)));
 			subTotal += i.getCount() * price;
+			
 			if (subTotal > character().getMaxAdena()) {
 				Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to purchase over " + character().getMaxAdena() + " adena worth of goods.");
 				return;

@@ -41,6 +41,8 @@ public final class Product {
 	
 	private final long _price;
 	
+	private final double _baseTax;
+	
 	private final long _restockDelay;
 	
 	private final long _maxCount;
@@ -49,10 +51,11 @@ public final class Product {
 	
 	private ScheduledFuture<?> _restockTask = null;
 	
-	public Product(int buyListId, L2Item item, long price, long restockDelay, long maxCount) {
+	public Product(int buyListId, L2Item item, long price, double baseTax, long restockDelay, long maxCount) {
 		_buyListId = buyListId;
 		_item = item;
 		_price = price;
+		_baseTax = baseTax;
 		_restockDelay = restockDelay * 60000;
 		_maxCount = maxCount;
 		if (hasLimitedStock()) {
@@ -73,10 +76,11 @@ public final class Product {
 	}
 	
 	public long getPrice() {
-		if (_price < 0) {
-			return getItem().getReferencePrice();
-		}
 		return _price;
+	}
+	
+	public double getBaseTax() {
+		return _baseTax;
 	}
 	
 	public long getRestockDelay() {
