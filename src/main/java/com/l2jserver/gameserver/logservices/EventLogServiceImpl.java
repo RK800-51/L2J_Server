@@ -1,5 +1,6 @@
 package com.l2jserver.gameserver.logservices;
 
+import com.l2jserver.gameserver.ThreadPoolManager;
 import com.l2jserver.gameserver.dao.factory.impl.DAOFactory;
 import com.l2jserver.gameserver.model.ItemInfo;
 import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
@@ -12,6 +13,7 @@ import static com.l2jserver.gameserver.model.itemcontainer.Inventory.ADENA_ID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Service layer for trade events logging.
@@ -19,6 +21,12 @@ import java.util.List;
  * Therefore, each trade in game has two trade logs - for each side. The ownership of objects is determined by boolean ownerFlag
  */
 public class EventLogServiceImpl implements EventLogService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EventLogServiceImpl.class);
+
+    private void asyncLog(Runnable task) {
+        ThreadPoolManager.getInstance().executeGeneral(task);
+    }
 
     /**
      * Takes trade data and converts it to L2PcInstanceTradeSuccessEvent and L2PcInstanceTradeItem.
@@ -31,6 +39,8 @@ public class EventLogServiceImpl implements EventLogService {
      */
     public boolean logL2PcInstanceTradeEvent(L2PcInstance owner, L2PcInstance partner, InventoryUpdate ownerIU,
                                         InventoryUpdate partnerIU, EventType eventType) {
+        final int ownerId = owner.getId();
+        final int partnerId = partner.getId();
         try {
             // create event object
             L2PcInstanceTradeSuccessEvent tradeEvent = new L2PcInstanceTradeSuccessEvent(System.currentTimeMillis(),
@@ -47,13 +57,24 @@ public class EventLogServiceImpl implements EventLogService {
                     .map(itemInfo -> new L2PcInstanceTradeItem(itemInfo.getItem().getId(), false, itemInfo.getCount()))
                     .toList();
 
-            // соединить TradeItem в один список и отправить в insert DAO
             List<L2PcInstanceItem> mergedItemList = new ArrayList<>(ownerItemList);
             mergedItemList.addAll(partnerItemList);
 
-            DAOFactory.getInstance().getInstanceEventDAO().insert(tradeEvent, mergedItemList);
+            // final items for asyncLog
+            List<L2PcInstanceItem> snapshot = List.copyOf(mergedItemList);
+
+            asyncLog(() -> {
+                // creating event and items for owner asynchronously
+                try {
+                    DAOFactory.getInstance().getInstanceEventDAO().insert(tradeEvent, snapshot);
+                } catch (Exception ex) {
+                    LOG.error("Async log failed for trade event: owner = {}, partner = {}", ownerId, partnerId, ex);
+                }
+            });
+
 
         }  catch (Exception ex) {
+            LOG.error("Error preparing mail trade log event", ex);
             return false;
         }
 
@@ -74,9 +95,6 @@ public class EventLogServiceImpl implements EventLogService {
                                              EventType eventType) {
 
         try {
-            // creating event and items for owner side (sender)
-            L2PcInstanceTradeSuccessEvent tradePostEvent1 =  new L2PcInstanceTradeSuccessEvent(System.currentTimeMillis(),
-                    ownerId, partnerId, eventType);
             List<ItemInfo> ownerItemInfo = new ArrayList<>(ownerIU.getItems());
             // sender owns items, so items get ownerFlag = true
             List<L2PcInstanceTradeItem> ownerItemList1 = ownerItemInfo.stream()
@@ -84,14 +102,10 @@ public class EventLogServiceImpl implements EventLogService {
                     .toList();
 
             L2PcInstanceTradeItem partnerAdena1 = new L2PcInstanceTradeItem(ADENA_ID, false, adenaAmount);
-            List<L2PcInstanceItem> mergedItemList = new ArrayList<>(ownerItemList1);
-            mergedItemList.add(partnerAdena1);
+            List<L2PcInstanceItem> mergedItemList1 = new ArrayList<>(ownerItemList1);
+            mergedItemList1.add(partnerAdena1);
+            List<L2PcInstanceItem> snapshot1 = List.copyOf(mergedItemList1);
 
-            DAOFactory.getInstance().getInstanceEventDAO().insert(tradePostEvent1, mergedItemList);
-
-            // creating event and items for partner side (receiver)
-            L2PcInstanceTradeSuccessEvent tradePostEvent2 =  new L2PcInstanceTradeSuccessEvent(System.currentTimeMillis(),
-                    ownerId, partnerId, eventType);
             // reuse ownerItemInfo list elements, create items for receiver with ownerFlag = false. Receiver owns only adena
             List<L2PcInstanceTradeItem> ownerItemList2 = ownerItemInfo.stream()
                     .map(itemInfo -> new L2PcInstanceTradeItem(itemInfo.getItem().getId(), false, itemInfo.getCount()))
@@ -99,10 +113,28 @@ public class EventLogServiceImpl implements EventLogService {
             L2PcInstanceTradeItem partnerAdena2 = new L2PcInstanceTradeItem(ADENA_ID, true, adenaAmount);
             List<L2PcInstanceItem> mergedItemList2 = new ArrayList<>(ownerItemList2);
             mergedItemList2.add(partnerAdena2);
+            List<L2PcInstanceItem> snapshot2 = List.copyOf(mergedItemList2);
 
-            DAOFactory.getInstance().getInstanceEventDAO().insert(tradePostEvent2, mergedItemList2);
+            asyncLog(() -> {
+                try {
+                    // creating event and items for owner side (sender) asynchronously
+                    L2PcInstanceTradeSuccessEvent tradePostEvent1 = new L2PcInstanceTradeSuccessEvent(
+                            System.currentTimeMillis(), ownerId, partnerId, eventType
+                    );
+                    DAOFactory.getInstance().getInstanceEventDAO().insert(tradePostEvent1, snapshot1);
+
+                    // creating event and items for partner side (receiver) asynchronously
+                    L2PcInstanceTradeSuccessEvent tradePostEvent2 = new L2PcInstanceTradeSuccessEvent(
+                            System.currentTimeMillis(), ownerId, partnerId, eventType
+                    );
+                    DAOFactory.getInstance().getInstanceEventDAO().insert(tradePostEvent2, snapshot2);
+                } catch (Exception ex) {
+                    LOG.error("Async log failed for mail trade event: owner = {}, partner = {}", ownerId, partnerId, ex);
+                }
+            });
 
         } catch (Exception ex) {
+            LOG.error("Error preparing mail trade log event", ex);
             return false;
         }
 
