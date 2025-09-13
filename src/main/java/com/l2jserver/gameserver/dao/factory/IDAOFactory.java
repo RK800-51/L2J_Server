@@ -21,24 +21,7 @@ package com.l2jserver.gameserver.dao.factory;
 import com.l2jserver.gameserver.bbs.repository.ForumRepository;
 import com.l2jserver.gameserver.bbs.repository.PostRepository;
 import com.l2jserver.gameserver.bbs.repository.TopicRepository;
-import com.l2jserver.gameserver.dao.ClanDAO;
-import com.l2jserver.gameserver.dao.FriendDAO;
-import com.l2jserver.gameserver.dao.HennaDAO;
-import com.l2jserver.gameserver.dao.ItemDAO;
-import com.l2jserver.gameserver.dao.ItemReuseDAO;
-import com.l2jserver.gameserver.dao.PetDAO;
-import com.l2jserver.gameserver.dao.PetSkillSaveDAO;
-import com.l2jserver.gameserver.dao.PlayerDAO;
-import com.l2jserver.gameserver.dao.PlayerSkillSaveDAO;
-import com.l2jserver.gameserver.dao.PremiumItemDAO;
-import com.l2jserver.gameserver.dao.RecipeBookDAO;
-import com.l2jserver.gameserver.dao.RecipeShopListDAO;
-import com.l2jserver.gameserver.dao.RecommendationBonusDAO;
-import com.l2jserver.gameserver.dao.ServitorSkillSaveDAO;
-import com.l2jserver.gameserver.dao.ShortcutDAO;
-import com.l2jserver.gameserver.dao.SkillDAO;
-import com.l2jserver.gameserver.dao.SubclassDAO;
-import com.l2jserver.gameserver.dao.TeleportBookmarkDAO;
+import com.l2jserver.gameserver.dao.*;
 
 /**
  * DAO Factory interface.
@@ -80,6 +63,8 @@ public interface IDAOFactory {
 	TeleportBookmarkDAO getTeleportBookmarkDAO();
 	
 	ClanDAO getClanDAO();
+
+    InstanceEventDAO  getInstanceEventDAO();
 	
 	ForumRepository getForumRepository();
 	
