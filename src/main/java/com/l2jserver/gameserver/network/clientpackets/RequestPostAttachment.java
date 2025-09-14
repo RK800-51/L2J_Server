@@ -22,13 +22,17 @@ import static com.l2jserver.gameserver.config.Configuration.general;
 import static com.l2jserver.gameserver.model.itemcontainer.Inventory.ADENA_ID;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import com.l2jserver.gameserver.datatables.ItemTable;
 import com.l2jserver.gameserver.enums.ItemLocation;
 import com.l2jserver.gameserver.enums.PrivateStoreType;
 import com.l2jserver.gameserver.instancemanager.MailManager;
+import com.l2jserver.gameserver.logservices.factory.impl.ServiceFactory;
 import com.l2jserver.gameserver.model.L2World;
+import com.l2jserver.gameserver.model.TradeList;
 import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jserver.gameserver.model.actor.instance.events.EventType;
 import com.l2jserver.gameserver.model.entity.Message;
 import com.l2jserver.gameserver.model.itemcontainer.ItemContainer;
 import com.l2jserver.gameserver.model.items.instance.L2ItemInstance;
@@ -47,6 +51,7 @@ import com.l2jserver.gameserver.util.Util;
  */
 public final class RequestPostAttachment extends L2GameClientPacket {
 	private static final String _C__D0_6A_REQUESTPOSTATTACHMENT = "[C] D0:6A RequestPostAttachment";
+    private static final Logger LOG = LoggerFactory.getLogger(RequestPostAttachment.class);
 	
 	private int _msgId;
 	
@@ -226,6 +231,17 @@ public final class RequestPostAttachment extends L2GameClientPacket {
 			sm.addCharName(activeChar);
 			sender.sendPacket(sm);
 		}
+        // create log of successful post trade
+        boolean loggedEvent = ServiceFactory.getInstance().getEventLogService().logL2PcInstanceTradeEvent(
+                msg.getSenderId(), msg.getReceiverId(), playerIU, adena, EventType.MAIL);
+        if (loggedEvent) {
+            LOG.info("Saved post trade info in database, sender: {}, partner: {}.", msg.getSenderName(), msg.getReceiverName());
+        }
+        else {
+            LOG.error("Error during trade event logging between sender {} and receiver {}.",
+                    msg.getSenderName(), msg.getReceiverName());
+        }
+
 		
 		activeChar.sendPacket(new ExChangePostState(true, _msgId, Message.READED));
 		activeChar.sendPacket(SystemMessageId.MAIL_SUCCESSFULLY_RECEIVED);

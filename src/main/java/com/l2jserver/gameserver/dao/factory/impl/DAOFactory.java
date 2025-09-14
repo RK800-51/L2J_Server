@@ -24,43 +24,9 @@ import com.l2jserver.gameserver.bbs.repository.TopicRepository;
 import com.l2jserver.gameserver.bbs.repository.impl.ForumRepositoryMySQLImpl;
 import com.l2jserver.gameserver.bbs.repository.impl.PostRepositoryMySQLImpl;
 import com.l2jserver.gameserver.bbs.repository.impl.TopicRepositoryMySQLImpl;
-import com.l2jserver.gameserver.dao.ClanDAO;
-import com.l2jserver.gameserver.dao.FriendDAO;
-import com.l2jserver.gameserver.dao.HennaDAO;
-import com.l2jserver.gameserver.dao.ItemDAO;
-import com.l2jserver.gameserver.dao.ItemReuseDAO;
-import com.l2jserver.gameserver.dao.PetDAO;
-import com.l2jserver.gameserver.dao.PetSkillSaveDAO;
-import com.l2jserver.gameserver.dao.PlayerDAO;
-import com.l2jserver.gameserver.dao.PlayerSkillSaveDAO;
-import com.l2jserver.gameserver.dao.PremiumItemDAO;
-import com.l2jserver.gameserver.dao.RecipeBookDAO;
-import com.l2jserver.gameserver.dao.RecipeShopListDAO;
-import com.l2jserver.gameserver.dao.RecommendationBonusDAO;
-import com.l2jserver.gameserver.dao.ServitorSkillSaveDAO;
-import com.l2jserver.gameserver.dao.ShortcutDAO;
-import com.l2jserver.gameserver.dao.SkillDAO;
-import com.l2jserver.gameserver.dao.SubclassDAO;
-import com.l2jserver.gameserver.dao.TeleportBookmarkDAO;
+import com.l2jserver.gameserver.dao.*;
 import com.l2jserver.gameserver.dao.factory.IDAOFactory;
-import com.l2jserver.gameserver.dao.impl.mysql.ClanDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.FriendDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.HennaDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.ItemDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.ItemReuseDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.PetDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.PetSkillSaveDAOMySQL;
-import com.l2jserver.gameserver.dao.impl.mysql.PlayerDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.PlayerSkillSaveDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.PremiumItemDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.RecipeBookDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.RecipeShopListDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.RecommendationBonusDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.ServitorSkillSaveDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.ShortcutDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.SkillDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.SubclassDAOMySQLImpl;
-import com.l2jserver.gameserver.dao.impl.mysql.TeleportBookmarkDAOMySQLImpl;
+import com.l2jserver.gameserver.dao.impl.mysql.*;
 
 /**
  * MySQL DAO Factory implementation.
@@ -87,6 +53,7 @@ public enum DAOFactory implements IDAOFactory {
 	private final SubclassDAO subclassDAO = new SubclassDAOMySQLImpl();
 	private final TeleportBookmarkDAO teleportBookmarkDAO = new TeleportBookmarkDAOMySQLImpl();
 	private final ClanDAO clanDAO = new ClanDAOMySQLImpl();
+    private final InstanceEventDAO instanceEventDAO = new InstanceEventDAOMySQLImpl();
 	private final ForumRepository forumRepository = new ForumRepositoryMySQLImpl();
 	private final TopicRepository topicRepository = new TopicRepositoryMySQLImpl();
 	private final PostRepository postRepository = new PostRepositoryMySQLImpl();
@@ -184,7 +151,11 @@ public enum DAOFactory implements IDAOFactory {
 	public ClanDAO getClanDAO() {
 		return clanDAO;
 	}
-	
+
+    @Override
+    public InstanceEventDAO getInstanceEventDAO() {
+        return instanceEventDAO;
+    }
 	@Override
 	public ForumRepository getForumRepository() {
 		return forumRepository;

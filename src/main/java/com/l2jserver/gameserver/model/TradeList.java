@@ -27,6 +27,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.l2jserver.gameserver.logservices.factory.impl.ServiceFactory;
+import com.l2jserver.gameserver.model.actor.instance.events.EventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -530,6 +532,17 @@ public class TradeList {
 			_partner.sendPacket(playerSU);
 			
 			success = true;
+
+            // save successful trade log to DB
+            boolean loggedEvent = ServiceFactory.getInstance().getEventLogService().logL2PcInstanceTradeEvent(_owner, _partner,
+                    ownerIU, partnerIU, EventType.TRADE);
+            if (loggedEvent) {
+                LOG.info("Saved trade info in database, owner: {}, partner: {}.", _owner.getName(), _partner.getName());
+            }
+            else {
+                LOG.error("Error during trade event logging between owner {} and partner {}.",
+                        _owner.getName(), _partner.getName());
+            }
 		}
 		// Finish the trade
 		partnerList.getOwner().onTradeFinish(success);
@@ -718,6 +731,16 @@ public class TradeList {
 		_owner.sendPacket(ownerIU);
 		player.sendPacket(playerIU);
 		if (ok) {
+            // Save successful trade log to DB
+            boolean loggedEvent = ServiceFactory.getInstance().getEventLogService().logL2PcInstanceTradeEvent(_owner, _partner,
+                    ownerIU, playerIU, EventType.PRIVATE_SHOP);
+            if (loggedEvent) {
+                LOG.info("Saved trade info in database, owner: {}, partner: {}.", _owner.getName(), player.getName());
+            }
+            else {
+                LOG.error("Error during trade event logging between owner {} and partner {}.",
+                        _owner.getName(), player.getName());
+            }
 			return 0;
 		}
 		return 2;
@@ -878,6 +901,17 @@ public class TradeList {
 		}
 		
 		if (ok) {
+            // Save successful trade log to DB
+            boolean loggedEvent = ServiceFactory.getInstance().getEventLogService().logL2PcInstanceTradeEvent(_owner, _partner,
+                    ownerIU, playerIU, EventType.PRIVATE_SHOP);
+            if (loggedEvent) {
+                LOG.info("Saved trade info in database, owner: {}, partner: {}.", _owner.getName(), player.getName());
+            }
+            else {
+                LOG.error("Error during trade event logging between owner {} and partner {}.",
+                        _owner.getName(), player.getName());
+            }
+
 			// Send inventory update packet
 			_owner.sendPacket(ownerIU);
 			player.sendPacket(playerIU);

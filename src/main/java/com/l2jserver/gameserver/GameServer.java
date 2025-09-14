@@ -35,6 +35,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 
+import com.l2jserver.gameserver.logservices.factory.impl.ServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -182,6 +183,7 @@ public final class GameServer {
 			.build();
 		
 		DAOFactory.getInstance();
+        ServiceFactory.getInstance();
 		
 		if (!IdFactory.getInstance().isInitialized()) {
 			LOG.error("Could not read object IDs from database. Please check your configuration.");
